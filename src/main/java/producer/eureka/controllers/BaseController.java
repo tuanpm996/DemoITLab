@@ -1,4 +1,4 @@
 package producer.eureka.controllers;
 
-public class CategoryController {
+public class BaseController {
 }
