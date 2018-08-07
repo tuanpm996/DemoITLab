@@ -1,29 +1,26 @@
 package producer.eureka.specification;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
-import producer.eureka.model.Teacher;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static producer.eureka.common.Common.JOIN_ATTRIBUTE;
+
 @AllArgsConstructor
-public class TeacherSpecificationBuilder {
+public class ObjectSpecificationBuilder {
 
     private final List<SearchCriteria> params;
 
-    public TeacherSpecificationBuilder() {
-        this.params = new ArrayList<SearchCriteria>();
+    public ObjectSpecificationBuilder() {
+        this.params = new ArrayList<>();
     }
 
-    public TeacherSpecificationBuilder with(String key, String operation, Object value) {
-        params.add(new SearchCriteria(key, operation, value));
-        return this;
-    }
-
-    public TeacherSpecificationBuilder with(String classname, String key, String operation, Object value) {
-        params.add(new SearchCriteria(classname, key, operation, value));
+    public ObjectSpecificationBuilder with(String root, String classname, String key,
+                                           String operation, Object value, String joinType) {
+        String keySearch = (JOIN_ATTRIBUTE.indexOf(key) > -1) ? key : "name";
+        params.add(new SearchCriteria(root, classname, keySearch, operation, value, joinType));
         return this;
     }
 
@@ -33,7 +30,7 @@ public class TeacherSpecificationBuilder {
         }
         List<Specification<Object>> specifications = new ArrayList<>();
         for (SearchCriteria param : params) {
-            specifications.add(new TeacherSpecification(param));
+            specifications.add(new ObjectSpecification(param));
         }
 
         Specification<Object> result = specifications.get(0);

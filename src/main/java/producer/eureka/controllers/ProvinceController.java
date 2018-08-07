@@ -6,30 +6,26 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import producer.eureka.model.Province;
+import producer.eureka.model.Teacher;
 import producer.eureka.services.ProvinceService;
 
 import javax.validation.Valid;
+import java.text.ParseException;
+import java.util.Map;
 
-//public class CategoryController {
-//}
-//
 
 @RestController
-@RequestMapping("api/categories")
-public class CategoryController extends BaseController {
+@RequestMapping("api/provinces")
+public class ProvinceController extends BaseController {
 
     @Autowired
     private ProvinceService provinceService;
 
-//    @Autowired
-//    private ProvinceService provinceService;
-
     @GetMapping("")
-    public ResponseEntity<Object> index(@RequestParam(value = "search", required = true) String search,
-                                        @RequestParam(value = "page", defaultValue = "1") int page,
-                                        @RequestParam(value = "size", defaultValue = "10") int size) {
-        Specification<Object> spec = convertSearchToSpecification(search);
-        return new ResponseEntity<>(provinceService.findAll(spec, page - 1, size), HttpStatus.OK);
+    public ResponseEntity<Object> index(@RequestParam Map<String, String> requestParams) throws ParseException {
+        this.convertParams(requestParams);
+        Specification<?> spec = convertStringToSpecification(this.search, Teacher.class);
+        return new ResponseEntity<>(provinceService.findAll(spec, this.page - 1, this.size), HttpStatus.OK);
     }
 
     @PostMapping("/create")
