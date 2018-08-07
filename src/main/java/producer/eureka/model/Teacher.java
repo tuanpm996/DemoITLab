@@ -10,6 +10,8 @@ import org.hibernate.annotations.*;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,14 +25,17 @@ public class Teacher {
     @Column
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private int id;
     private String name;
+    @NotNull
     private String info;
+
     private String facebook;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @Cascade(org.hibernate.annotations.CascadeType.DETACH)
     @JoinColumn(name = "province")
+    @NotNull
     private Province province;
 
 
@@ -46,11 +51,21 @@ public class Teacher {
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
+    @Valid
     private List<TeacherEmail> teacherEmails = new ArrayList<>();
+
+    @OneToMany(mappedBy = "teacher")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference
+    @Valid
+    private List<TeacherPhone> teacherPhones = new ArrayList<>();
 
 
     @Transient
     private List<Category> categories;
+
+
 
 
 }

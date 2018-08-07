@@ -11,5 +11,11 @@ public interface TeacherService {
 
     public Iterable<Teacher> findAll(Specification specification, int page, int size);
 
+    Teacher search(int id);
+
+    Teacher update(int id, Teacher teacher);
+
+    void delete(int id);
+
 
 }

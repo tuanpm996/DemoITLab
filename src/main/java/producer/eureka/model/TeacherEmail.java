@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -25,7 +26,9 @@ public class TeacherEmail {
     @JsonBackReference
     private Teacher teacher;
 
+    @Email
     private String email;
+
     private String createdBy;
     private Date createdAt;
     private Boolean softDelete;
